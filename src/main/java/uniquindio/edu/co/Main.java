@@ -1,17 +1,91 @@
 package uniquindio.edu.co;
+import uniquindio.edu.co.model.*;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import java.util.Locale;
+import java.util.Scanner;
+
+
 public class Main {
     static void main() {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        IO.println(String.format("Hello and welcome!"));
+        Scanner scanner = new Scanner(System.in);
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            IO.println("i = " + i);
+        boolean bandera=true;
+
+
+        while (bandera==true){
+            System.out.printf("Ingrese una opcion: ");
+
+        int numeroejercio = scanner.nextInt();
+        scanner.nextLine();
+
+
+        switch (numeroejercio) {
+            case 1:
+                Ejercicio1 ej1 = new Ejercicio1();
+
+                System.out.print("Ingrese el nombre: ");
+                ej1.setName(scanner.nextLine());
+
+
+                System.out.print("Ingrese el café recolectado (kg): ");
+                ej1.setCofferecolected(scanner.nextDouble());
+
+                scanner.nextLine();
+
+                System.out.println(ej1.toString());
+
+                bandera=seguirocerrar();
+
+                break;
+
+            case 2:
+                Ejercicio2 ej2 = new Ejercicio2();
+
+                System.out.print("Ingrese el valor de la cuenta base: ");
+                ej2.setValorcuentabase(scanner.nextDouble());
+
+                System.out.print("Ingrese el numero de personas: ");
+                ej2.setNumeropersonas(scanner.nextInt());
+
+                scanner.nextLine();
+
+                System.out.println(ej2.toString());
+
+                bandera=seguirocerrar();
+
+
+                break;
+
+            case 3:
+                Ejercicio3 ej3= new Ejercicio3();
+
+                System.out.printf("Ingrese los segundos de renderizado: ");
+                ej3.setSegundosrenderizado(scanner.nextInt());
+
+                scanner.nextLine();
+
+                System.out.println(ej3.toString());
+
+                bandera=seguirocerrar();
         }
+
+
+    }
+
+
+
+
+
+
+        }
+
+
+    public static boolean seguirocerrar(){
+        Scanner scanner=new Scanner(System.in);
+        System.out.println("Quieres revisar otro ejecicio: SI/NO ");
+        String confirmacion = scanner.nextLine().trim();
+
+        return confirmacion.equalsIgnoreCase("SI");
+
     }
 }

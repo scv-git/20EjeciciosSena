@@ -11,26 +11,32 @@ public class Ejercicio4 {
     }
 
     public double calcularCostoEstimado() {
+
         return calcularGalonesNecesarios() * precioGalon;
     }
 
     public String getRuta() {
+
         return ruta;
     }
 
     public void setRuta(String ruta) {
+
         this.ruta = ruta;
     }
 
     public double getDistanciaKilometros() {
+
         return distanciaKilometros;
     }
 
     public void setDistanciaKilometros(double distanciaKilometros) {
+
         this.distanciaKilometros = distanciaKilometros;
     }
 
     public double getRendimientoKilometrosGalon() {
+
         return rendimientoKilometrosGalon;
     }
 

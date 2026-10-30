@@ -44,7 +44,7 @@ Proyecto de consola en Java que resuelve los 20 ejercicios del taller **"Estruct
         └── resources/
 ```
 
-- `Main.java`: contiene el menú, el `Scanner`, el `switch` y el ciclo que permite elegir varios ejercicios.
+- `Main.java`: contiene el menú, el `Scanner`, las validaciones, el `switch` y el ciclo que permite elegir varios ejercicios.
 - `model/`: contiene una clase por ejercicio. Cada clase guarda los datos, realiza los cálculos y genera el reporte con `toString()`.
 - `target/`: se genera automáticamente al compilar; no se edita manualmente.
 
@@ -53,14 +53,16 @@ Proyecto de consola en Java que resuelve los 20 ejercicios del taller **"Estruct
 El proyecto separa las responsabilidades así:
 
 1. **Entrada de datos (`Main`)**: el `Main` muestra la lista de ejercicios, lee la opción y solicita los datos necesarios con `Scanner`.
-2. **Modelo (`model/EjercicioN`)**: cada clase recibe los datos mediante sus métodos `set`, los almacena en atributos `private`, realiza los cálculos con sus propios métodos y construye el resultado en `toString()`.
-3. **Salida (`Main`)**: después de llenar el objeto, el `Main` imprime `ejercicio.toString()` en consola.
-4. **Repetición**: al terminar, se pregunta `SI/NO` para volver al menú o cerrar el programa.
+2. **Validación (`Main`)**: todos los datos numéricos se leen con `validacionint(...)` o `validaciondouble(...)`. Si el usuario escribe algo inválido, el programa muestra un mensaje y vuelve a pedir el dato.
+3. **Contexto (`Main`)**: al entrar a un ejercicio, se imprime el número, el título y una breve descripción antes de pedir los datos.
+4. **Modelo (`model/EjercicioN`)**: cada clase recibe los datos mediante sus métodos `set`, los almacena en atributos `private`, realiza los cálculos con sus propios métodos y construye el resultado en `toString()`.
+5. **Salida (`Main`)**: después de llenar el objeto, el `Main` imprime `ejercicio.toString()` en consola.
+6. **Repetición**: al terminar, se pregunta `SI/NO` para volver al menú o cerrar el programa.
 
 En otras palabras:
 
 ```text
-Main (entrada y menú) -> EjercicioN (datos y cálculos) -> Main (impresión del resultado)
+Main (menú y validación) -> EjercicioN (datos y cálculos) -> Main (impresión del resultado)
 ```
 
 El menú funciona con un `switch`:
@@ -68,9 +70,13 @@ El menú funciona con un `switch`:
 ```java
 switch (numeroejercio) {
     case 1:
+        mostrarContexto(1, "LIQUIDACIÓN DE COSECHA CAFETERA",
+                "Liquide el pago diario del recolector de café.");
         // Se crea Ejercicio1, se piden sus datos y se imprime
         break;
     case 2:
+        mostrarContexto(2, "DIVISIÓN DE CUENTA EN RESTAURANTE CON PROPINA",
+                "Divida la cuenta del restaurante entre las personas.");
         // Se crea Ejercicio2, se piden sus datos y se imprime
         break;
     // ...
@@ -80,13 +86,77 @@ switch (numeroejercio) {
 }
 ```
 
+## Validación de entradas numéricas
+
+El `Main` usa dos métodos auxiliares:
+
+- `validacionint(Scanner scanner, String mensaje)` para datos enteros.
+- `validaciondouble(Scanner scanner, String mensaje)` para datos decimales.
+
+Ambos métodos:
+
+1. Imprimen el mensaje recibido.
+2. Verifican si el siguiente dato es del tipo esperado.
+3. Si es válido, lo devuelven.
+4. Si no es válido, descartan la entrada, muestran `Ingrese un numero valido` y vuelven a pedir el dato.
+
+Ejemplo de uso:
+
+```java
+int numeroejercio = validacionint(scanner, "Ingrese una opcion: ");
+double peso = validaciondouble(scanner, "Ingrese el peso en kilogramos: ");
+```
+
+Como el mensaje lo imprime el validador, no se debe escribir un `System.out.print(...)` antes de llamarlo. Después del último dato numérico de cada caso se usa `scanner.nextLine()` para limpiar el salto de línea pendiente.
+
+La validación es únicamente de tipo numérico; no valida rangos como categorías 1 a 4 ni códigos 1/2. El `Main` usa `scanner.useLocale(Locale.US)` para aceptar decimales escritos con punto, por ejemplo `1.70`.
+
+## Contexto de cada ejercicio
+
+Al elegir una opción del menú, el `Main` llama a:
+
+```java
+public static void mostrarContexto(int numero, String titulo, String descripcion) {
+    System.out.println("\n=== EJERCICIO " + numero + ": " + titulo + " ===");
+    System.out.println(descripcion);
+    System.out.println();
+}
+```
+
+Esto permite que el usuario sepa qué ejercicio está resolviendo antes de ingresar los datos.
+
+| Opción | Contexto mostrado |
+|---|---|
+| 1 | Liquide el pago diario del recolector de café. |
+| 2 | Divida la cuenta del restaurante entre las personas. |
+| 3 | Convierta los segundos a horas, minutos y segundos. |
+| 4 | Calcule el combustible y el costo estimado del viaje. |
+| 5 | Verifique el peso del equipaje y aplique el recargo si corresponde. |
+| 6 | Evalúe la temperatura del cuarto frío y el riesgo del inventario. |
+| 7 | Determine las cajas completas y las baldosas faltantes. |
+| 8 | Calcule el pago de horas ordinarias y extras. |
+| 9 | Calcule el IMC y clasifique el diagnóstico. |
+| 10 | Calcule la factura del acueducto según el consumo. |
+| 11 | Calcule la comisión y el pago total del asesor. |
+| 12 | Aplique el descuento según el día y el medio de pago. |
+| 13 | Evalúe la solicitud de crédito hipotecario. |
+| 14 | Clasifique el nivel de triaje del paciente. |
+| 15 | Verifique si el aspirante cumple los requisitos. |
+| 16 | Determine si el año es bisiesto. |
+| 17 | Verifique y clasifique el triángulo. |
+| 18 | Calcule el cobro del peaje según la categoría y el telepeaje. |
+| 19 | Convierta pesos colombianos a la moneda seleccionada. |
+| 20 | Calcule la cotización del plan de gimnasio. |
+
 ## Diagrama de conexión con el Main
 
 ```mermaid
 flowchart TD
     USUARIO[Usuario] -->|Elige una opción y escribe datos| MAIN[Main.java]
     MAIN --> MENU[Menú 1 al 20]
-    MAIN --> SCANNER[Scanner]
+    MAIN --> VALIDACION[validacionint / validaciondouble]
+    VALIDACION --> SCANNER[Scanner]
+    MAIN --> CONTEXTO[mostrarContexto]
     MAIN --> SWITCH{switch opción}
 
     SWITCH -->|1| E1[Ejercicio1]
@@ -168,16 +238,19 @@ Todos los ejercicios siguen el mismo patrón. Por ejemplo, para el Ejercicio 9:
 
 ```java
 case 9: {
+    mostrarContexto(
+            9,
+            "CLASIFICACIÓN DEL IMC",
+            "Calcule el IMC y clasifique el diagnóstico."
+    );
+
     Ejercicio9 ej9 = new Ejercicio9();
 
     System.out.print("Ingrese el nombre del deportista: ");
     ej9.setDeportista(scanner.nextLine());
 
-    System.out.print("Ingrese el peso en kilogramos: ");
-    ej9.setPeso(scanner.nextDouble());
-
-    System.out.print("Ingrese la estatura en metros: ");
-    ej9.setEstatura(scanner.nextDouble());
+    ej9.setPeso(validaciondouble(scanner, "Ingrese el peso en kilogramos: "));
+    ej9.setEstatura(validaciondouble(scanner, "Ingrese la estatura en metros: "));
     scanner.nextLine();
 
     System.out.println(ej9.toString());
@@ -220,19 +293,21 @@ El flujo completo de una ejecución es:
 
 1. El programa muestra el menú del 1 al 20.
 2. El usuario escribe el número del ejercicio.
-3. El `Main` crea el objeto `EjercicioN` correspondiente.
-4. El `Main` pide los datos y los guarda usando los `set`.
-5. El objeto calcula el resultado cuando se llama a sus métodos o a `toString()`.
-6. El `Main` imprime el reporte.
-7. El programa pregunta `SI/NO` para continuar.
+3. El `Main` muestra el contexto del ejercicio elegido.
+4. El `Main` crea el objeto `EjercicioN` correspondiente.
+5. El `Main` pide los datos, validando los numéricos, y los guarda usando los `set`.
+6. El objeto calcula el resultado cuando se llama a sus métodos o a `toString()`.
+7. El `Main` imprime el reporte.
+8. El programa pregunta `SI/NO` para continuar.
 
 ### Ejemplo de ejecución
 
-Entrada:
+Entrada (se incluye un dato inválido a propósito):
 
 ```text
 9
 Camila Soto
+abc
 78
 1.70
 NO
@@ -241,7 +316,16 @@ NO
 Salida aproximada:
 
 ```text
+=== EJERCICIO 9: CLASIFICACIÓN DEL IMC ===
+Calcule el IMC y clasifique el diagnóstico.
+
+Ingrese el nombre del deportista: Ingrese el peso en kilogramos:
+Ingrese un numero valido
+
+Ingrese el peso en kilogramos:
+Ingrese la estatura en metros:
 Ejercicio9{Paciente='Camila Soto', Peso=78.0 kg, Estatura=1.7 m, IMC Calculado=26.989619377162633, Diagnóstico Médico=Sobrepeso}
+Quieres revisar otro ejercicio: SI/NO
 ```
 
 ## Cómo compilar y ejecutar
@@ -275,12 +359,17 @@ java -cp target/classes uniquindio.edu.co.Main
 4. Implementar los métodos de cálculo propios del ejercicio.
 5. Sobrescribir `toString()` para devolver el reporte final.
 6. Agregar la opción al menú del `Main`.
-7. Agregar el nuevo `case` en el `switch`, leyendo los datos con `Scanner`, llamando a los `set` e imprimiendo `toString()`.
+7. Agregar el nuevo `case` en el `switch` y llamar a `mostrarContexto(...)` al inicio.
+8. Leer los datos de texto con `scanner.nextLine()` y los datos numéricos con `validacionint(...)` o `validaciondouble(...)`.
+9. Llamar a los `set`, imprimir `toString()` y actualizar `bandera` con `seguirocerrar(scanner)`.
 
 ## Notas importantes
 
 - Los datos se leen en el `Main`; las clases del `model` no deberían pedir datos por teclado. La única excepción actual es `Ejercicio2`, que conserva su lógica original para preguntar por la propina.
 - El `Main` usa `scanner.useLocale(Locale.US)` para aceptar decimales escritos con punto, por ejemplo `1.70`.
-- Después de leer un número con `nextInt()` o `nextDouble()`, se llama a `nextLine()` para limpiar el salto de línea pendiente.
+- Los datos numéricos se leen con `validacionint(...)` o `validaciondouble(...)`; no se usa directamente `scanner.nextInt()` ni `scanner.nextDouble()` en los casos de los ejercicios.
+- Después del último dato numérico de cada caso se llama a `scanner.nextLine()` para limpiar el salto de línea pendiente.
+- Los validadores solo comprueban el tipo de dato, no los rangos permitidos.
+- Cada caso muestra su contexto con `mostrarContexto(...)` antes de pedir los datos.
 - Los ejercicios del taller no usan ciclos en el modelo; el único ciclo del proyecto es el menú del `Main` para permitir ejecutar varios ejercicios.
 - El PDF del taller está ubicado actualmente en `src/main/java/uniquindio/edu/co/` y sirve como referencia de los enunciados.

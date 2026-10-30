@@ -19,7 +19,7 @@ public class Ejercicio2 {
 
         if(agregarpropina.equalsIgnoreCase("SI")){
             setEstadopropina("SI");
-            return (valorcuentabase/numeropersonas)*(propina/100);
+            return (valorcuentabase)*(propina/100);
         }
         else
 

@@ -136,7 +136,7 @@ public class Main {
 
                 case 6: {
                     mostrarContexto(
-                            86,
+                            6,
                             "CONTROL DE TEMPERATURA EN CUARTO FRÍO",
                             "Evalúe la temperatura del cuarto frío y el riesgo del inventario."
                     );

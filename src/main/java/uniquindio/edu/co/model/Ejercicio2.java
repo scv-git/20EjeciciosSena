@@ -1,40 +1,35 @@
 package uniquindio.edu.co.model;
-import java.util.Scanner;
 
-
-//dividir cuenta
-
+// División de cuenta en restaurante con propina
 
 public class Ejercicio2 {
+    private static final double PORCENTAJE_IMPOCONSUMO = 0.08;
+
     private double valorcuentabase;
     private int numeropersonas;
-    private double propina=10;
-    private String estadopropina;
+    private double propina = 10;
 
+    public double calcularImpoconsumo() {
+        return valorcuentabase * PORCENTAJE_IMPOCONSUMO;
+    }
 
-    public double calculapropina(double valorcuentabase, int numeropersonas, double propina){
-        Scanner scanner= new Scanner(System.in);
-        System.out.printf("Desea Agregar propina SI/NO: ");
-        String agregarpropina=scanner.nextLine().trim();
+    public double calcularPropina() {
+        return valorcuentabase * (propina / 100.0);
+    }
 
-        if(agregarpropina.equalsIgnoreCase("SI")){
-            setEstadopropina("SI");
-            return (valorcuentabase)*(propina/100);
+    public double calcularTotalFactura() {
+        return valorcuentabase + calcularImpoconsumo() + calcularPropina();
+    }
+
+    public double calcularCuotaPorPersona() {
+        if (numeropersonas <= 0) {
+            return 0;
         }
-        else
-
-            setEstadopropina("NO");
-            return valorcuentabase/numeropersonas;
-
-
+        return calcularTotalFactura() / numeropersonas;
     }
 
-    public String getEstadopropina() {
-        return estadopropina;
-    }
-
-    public void setEstadopropina(String estadopropina) {
-        this.estadopropina = estadopropina;
+    public double calculapropina(double valorcuentabase, int numeropersonas, double propina) {
+        return valorcuentabase * (propina / 100.0);
     }
 
     public double getValorcuentabase() {
@@ -61,12 +56,18 @@ public class Ejercicio2 {
         this.propina = propina;
     }
 
+    public double getPorcentajeImpoconsumo() {
+        return PORCENTAJE_IMPOCONSUMO;
+    }
+
     @Override
     public String toString() {
         return "Ejercicio2{" +
-                "Valor Cuenta Base=" + valorcuentabase +
-                ", Numero Personas Para Dividir La Cuenta=" + numeropersonas +
-                ", Propina voluntaria=" + propina +"%"+", Total="+ calculapropina(valorcuentabase,numeropersonas,propina)+valorcuentabase+ ", Propina Agregada="+ estadopropina+
+                "Consumo Base=" + valorcuentabase +
+                ", Impoconsumo (8%)=" + calcularImpoconsumo() +
+                ", Propina (" + propina + "%)=" + calcularPropina() +
+                ", TOTAL FACTURA=" + calcularTotalFactura() +
+                ", Cuota por cada amigo (" + numeropersonas + " personas)=" + calcularCuotaPorPersona() +
                 '}';
     }
 }

@@ -24,7 +24,8 @@ public class Ejercicio3 {
     @Override
     public String toString() {
         return "Ejercicio3{" +
-                "Segundos de renderizado=" + segundosrenderizado +calculartiempo(segundosrenderizado)+
+                "Segundos de renderizado=" + segundosrenderizado +
+                ", " + calculartiempo(segundosrenderizado) +
                 '}';
     }
 }

@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 
 public class Main {
-    static void main() {
+    public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         scanner.useLocale(Locale.US);
 
@@ -35,7 +35,7 @@ public class Main {
             System.out.println("19. Casa de cambio internacional");
             System.out.println("20. Cotizador de suscripción a gimnasio");
 
-            int numeroejercio = validacionint(scanner, "Ingrese una opcion: ");
+            int numeroejercio = validacionRangoInt(scanner, "Ingrese una opcion (1-20): ", 1, 20);
             scanner.nextLine();
 
             switch (numeroejercio) {
@@ -48,10 +48,11 @@ public class Main {
 
                     Ejercicio1 ej1 = new Ejercicio1();
 
-                    System.out.print("Ingrese el nombre: ");
+                    System.out.print("Ingrese el nombre del recolector: ");
                     ej1.setName(scanner.nextLine());
 
                     ej1.setCofferecolected(validaciondouble(scanner, "Ingrese el café recolectado (kg): "));
+                    ej1.setPRICEKG(validaciondouble(scanner, "Ingrese el precio pagado por kilo ($): "));
                     scanner.nextLine();
 
                     System.out.println(ej1.toString());
@@ -67,8 +68,9 @@ public class Main {
 
                     Ejercicio2 ej2 = new Ejercicio2();
 
-                    ej2.setValorcuentabase(validaciondouble(scanner, "Ingrese el valor de la cuenta base: "));
-                    ej2.setNumeropersonas(validacionint(scanner, "Ingrese el numero de personas: "));
+                    ej2.setValorcuentabase(validaciondouble(scanner, "Ingrese el valor del consumo base: "));
+                    ej2.setPropina(validaciondouble(scanner, "Ingrese el porcentaje de propina voluntaria (ej. 10): "));
+                    ej2.setNumeropersonas(validacionRangoInt(scanner, "Ingrese la cantidad de personas: ", 1, Integer.MAX_VALUE));
                     scanner.nextLine();
 
                     System.out.println(ej2.toString());
@@ -256,10 +258,10 @@ public class Main {
                     Ejercicio12 ej12 = new Ejercicio12();
 
                     ej12.setValorCompra(validaciondouble(scanner, "Ingrese el valor de la compra: "));
-                    ej12.setEsMartes(validacionint(scanner, "¿Hoy es Martes de Descuento? (1 = Sí, 2 = No): "));
+                    ej12.setEsMartes(validacionRangoInt(scanner, "¿Hoy es Martes de Descuento? (1 = Sí, 2 = No): ", 1, 2));
 
                     if (ej12.getEsMartes() == 1) {
-                        ej12.setMedioPago(validacionint(scanner, "Ingrese el medio de pago (1 = Efectivo, 2 = Tarjeta): "));
+                        ej12.setMedioPago(validacionRangoInt(scanner, "Ingrese el medio de pago (1 = Efectivo, 2 = Tarjeta): ", 1, 2));
                     }
                     scanner.nextLine();
 
@@ -300,11 +302,11 @@ public class Main {
 
                     Ejercicio14 ej14 = new Ejercicio14();
 
-                    ej14.setDificultadRespiratoria(validacionint(scanner, "¿Presenta dificultad respiratoria grave? (1 = Sí, 2 = No): "));
+                    ej14.setDificultadRespiratoria(validacionRangoInt(scanner, "¿Presenta dificultad respiratoria grave? (1 = Sí, 2 = No): ", 1, 2));
 
                     if (ej14.getDificultadRespiratoria() != 1) {
                         ej14.setTemperatura(validaciondouble(scanner, "Ingrese la temperatura corporal (°C): "));
-                        ej14.setNivelDolor(validacionint(scanner, "Ingrese el nivel de dolor (1 a 10): "));
+                        ej14.setNivelDolor(validacionRangoInt(scanner, "Ingrese el nivel de dolor (1 a 10): ", 1, 10));
                     }
                     scanner.nextLine();
 
@@ -324,8 +326,8 @@ public class Main {
 
                     ej15.setEdad(validacionint(scanner, "Ingrese la edad: "));
                     ej15.setPromedio(validaciondouble(scanner, "Ingrese el promedio acumulado: "));
-                    ej15.setInglesCertificado(validacionint(scanner, "¿Tiene inglés certificado? (1 = Sí, 0 = No): "));
-                    ej15.setGanoConcurso(validacionint(scanner, "¿Ganó un concurso de algoritmos? (1 = Sí, 0 = No): "));
+                    ej15.setInglesCertificado(validacionRangoInt(scanner, "¿Tiene inglés certificado? (1 = Sí, 0 = No): ", 0, 1));
+                    ej15.setGanoConcurso(validacionRangoInt(scanner, "¿Ganó un concurso de algoritmos? (1 = Sí, 0 = No): ", 0, 1));
                     scanner.nextLine();
 
                     System.out.println(ej15.toString());
@@ -381,8 +383,8 @@ public class Main {
                     System.out.print("Ingrese la placa del vehículo: ");
                     ej18.setPlaca(scanner.nextLine());
 
-                    ej18.setCategoria(validacionint(scanner, "Ingrese la categoría (1 = Automóvil, 2 = Bus, 3 = Camión, 4 = Tractomula): "));
-                    ej18.setTelepeaje(validacionint(scanner, "¿Tiene telepeaje activo? (1 = Sí, 2 = No): "));
+                    ej18.setCategoria(validacionRangoInt(scanner, "Ingrese la categoría (1 = Automóvil, 2 = Bus, 3 = Camión, 4 = Tractomula): ", 1, 4));
+                    ej18.setTelepeaje(validacionRangoInt(scanner, "¿Tiene telepeaje activo? (1 = Sí, 2 = No): ", 1, 2));
                     scanner.nextLine();
 
                     System.out.println(ej18.toString());
@@ -400,7 +402,7 @@ public class Main {
                     Ejercicio19 ej19 = new Ejercicio19();
 
                     ej19.setPesosColombianos(validaciondouble(scanner, "Ingrese la cantidad de pesos colombianos a cambiar: "));
-                    ej19.setMonedaDestino(validacionint(scanner, "Elija la moneda destino (1 = Dólar, 2 = Euro, 3 = Real): "));
+                    ej19.setMonedaDestino(validacionRangoInt(scanner, "Elija la moneda destino (1 = Dólar, 2 = Euro, 3 = Real): ", 1, 3));
                     scanner.nextLine();
 
                     System.out.println(ej19.toString());
@@ -420,9 +422,9 @@ public class Main {
                     System.out.print("Ingrese el nombre del cliente: ");
                     ej20.setCliente(scanner.nextLine());
 
-                    ej20.setPlan(validacionint(scanner, "Elija el plan (1 = Mensual, 2 = Trimestral, 3 = Anual): "));
+                    ej20.setPlan(validacionRangoInt(scanner, "Elija el plan (1 = Mensual, 2 = Trimestral, 3 = Anual): ", 1, 3));
                     ej20.setEdad(validacionint(scanner, "Ingrese la edad del cliente: "));
-                    ej20.setEntrenador(validacionint(scanner, "¿Desea incluir entrenador personalizado? (1 = Sí, 2 = No): "));
+                    ej20.setEntrenador(validacionRangoInt(scanner, "¿Desea incluir entrenador personalizado? (1 = Sí, 2 = No): ", 1, 2));
                     scanner.nextLine();
 
                     System.out.println(ej20.toString());
@@ -472,6 +474,25 @@ public class Main {
         }
         return numero;
 
+    }
+
+    public static int validacionRangoInt(Scanner scanner, String mensaje, int min, int max) {
+        boolean validacion = true;
+        int numero = 0;
+
+        while (validacion) {
+            numero = validacionint(scanner, mensaje);
+            if (numero >= min && numero <= max) {
+                validacion = false;
+            } else {
+                if (max == Integer.MAX_VALUE) {
+                    System.out.println("El valor debe ser mayor o igual a " + min + ". Intente nuevamente.\n");
+                } else {
+                    System.out.println("El valor debe estar en el rango de " + min + " a " + max + ". Intente nuevamente.\n");
+                }
+            }
+        }
+        return numero;
     }
 
     public static double validaciondouble(Scanner scanner,String mensaje){
